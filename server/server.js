@@ -22,12 +22,32 @@ app.use('/api/cart', cartRoutes);
 app.use('/api/orders', orderRoutes);
 
 // MongoDB Connection
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
+// mongoose.connect(process.env.MONGO_URI, {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true
+// })
+//   .then(() => console.log("✅ MongoDB Connected"))
+//   .catch(err => console.error("❌ MongoDB Error:", err));
+
+
+// new tarika hai isko use karo old wall ni
+mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("✅ MongoDB Connected"))
   .catch(err => console.error("❌ MongoDB Error:", err));
 
-// ✅ Export app (NO app.listen here)
+
+
+//test
+app.get('/', (req, res) => {
+  res.send('API is running...');
+});
+
+// ye is liya hai kyu ki jab devlopmen mode me rahe ga to local server pe chale ga nii to server less jaise kam kare ga ( isko dhyan se comments hata lena samjha kar)
+if (process.env.NODE_ENV !== 'production') {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    console.log(`🚀 Server is running locally on http://localhost:${PORT}`);
+  });
+}
+
 export default app;
