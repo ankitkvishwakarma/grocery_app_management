@@ -1,12 +1,11 @@
 import serverless from 'serverless-http';
 import app from '../server.js';
 
-const handler = serverless(app);
+const serverlessHandler = serverless(app);
 
-// Wrap in try-catch to prevent crashing
 export const handler = async (req, res) => {
   try {
-    return await handler(req, res);
+    return await serverlessHandler(req, res);
   } catch (err) {
     console.error("❌ Serverless Function Error:", err);
     return {
