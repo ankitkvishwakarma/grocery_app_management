@@ -22,12 +22,17 @@ app.use('/api/products', productRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/orders', orderRoutes);
 
-// MongoDB connection (without deprecated options)
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("✅ MongoDB Connected"))
-  .catch(err => console.error("❌ MongoDB Error:", err));
+// ✅ MongoDB Connection — with error handling
+try {
+  await mongoose.connect(process.env.MONGO_URI);
+  console.log("✅ MongoDB Connected");
+} catch (err) {
+  console.error("❌ MongoDB Connection Error:", err);
+  // If MongoDB connection fails, throw error to stop app
+  throw new Error("Failed to connect to MongoDB");
+}
 
-// Local development server
+// ✅ Local dev only
 if (process.env.NODE_ENV !== 'production') {
   const PORT = process.env.PORT || 5000;
   app.listen(PORT, () => {
